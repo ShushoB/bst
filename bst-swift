@@ -1,0 +1,105 @@
+import Foundation
+
+class BinaryNode <Element> {
+  var value: Element
+  var leftChild: BinaryNode?
+  var rightChild: BinaryNode?
+
+  init(value: Element, leftChild: BinaryNode? = nil, rightChild: BinaryNode? = nil ) {
+    self.value = value 
+    self.leftChild = leftChild
+    self.rightChild = rightChild
+  }
+}
+
+
+ class BinaryTree <Element: Comparable & CustomStringConvertible> {
+  private var rootNode: BinaryNode<Element>?
+
+  func insert(element: Element) {
+    let node = BinaryNode(value: element)
+    if let rootNode = self.rootNode {
+      self.insert(rootNode, node)
+    } else {
+      self.rootNode = node
+    }
+  }
+
+    private func insert(_ rootNode: BinaryNode<Element>, _ node: BinaryNode<Element>) {
+      if rootNode.value > node.value {
+        if let leftChild = rootNode.leftChild {
+          self.insert(leftChild, node)
+        } else {
+          rootNode.leftChild = node
+        }
+      } else {
+        if let rightChild = rootNode.rightChild {
+          self.insert(rightChild, node)
+        } else {
+          rootNode.rightChild = node
+        }
+      }
+    }
+
+  private func traverseInorder(_ node: BinaryNode<Element>?) {
+    guard let _ = node else { return }
+    self.traverseInorder(node?.leftChild)
+    print("\(node!.value)")
+    self.traverseInorder(node?.rightChild)
+  }
+
+  private func traversePreorder(_ node: BinaryNode<Element>?) {
+    guard let _ = node else { return }
+    print("\(node!.value)")
+    self.traversePreorder(node?.leftChild)
+    self.traversePreorder(node?.rightChild)
+  }
+
+  private func traversePostorder(_ node: BinaryNode<Element>?) {
+    guard let _ = node else { return }
+    self.traversePostorder(node?.leftChild)
+    self.traversePostorder(node?.rightChild)
+    print("\(node!.value)")
+  }
+
+  func traverse() {
+    print("Preorder Traversal")
+    self.traversePreorder(self.rootNode)
+    print("Inorder Traversal")
+    self.traverseInorder(self.rootNode)
+    print("Postorder Traversal")
+    self.traversePostorder(self.rootNode)
+    print("\n")
+    }
+
+  func search(element: Element) {
+    self.search(self.rootNode, element)
+  }
+  private func search(_ rootNode: BinaryNode<Element>?, _ element: Element){
+    guard let rootNode = rootNode else {
+      print("\(element) Not Found")
+      return
+  } 
+  if element > rootNode.value {
+    self.search(rootNode.rightChild, element)
+  } else if element < rootNode.value {
+    self.search(rootNode.leftChild, element)
+  } else {
+    print("\(element) found")
+  }
+}
+}
+
+
+var binaryTree = BinaryTree<Int>()
+binaryTree.insert(element: 5)
+binaryTree.insert(element: 9)
+binaryTree.insert(element: 3)
+binaryTree.insert(element: 2)
+binaryTree.insert(element: 4)
+binaryTree.insert(element: 7)
+binaryTree.insert(element: 11)
+
+binaryTree.traverse()
+binaryTree.search(element: 10)
+binaryTree.search(element: 4)
