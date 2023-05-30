@@ -1,0 +1,10 @@
+import Node
+import BinaryTree
+
+def read_from_file(path):
+    with open(path, 'r') as file:
+        data = file.read().split()
+    tree = BinaryTree.BinarySearchTree()
+    for index in range(0, len(data)-1):
+        tree.insert(data[index])
+    return tree
